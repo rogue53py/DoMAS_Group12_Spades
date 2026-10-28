@@ -1,7 +1,5 @@
 # Theory of Mind in a Simplified Team-Based Card Game
-
-Code for the DMAS course project (University of Groningen).
-Group: Thom Boerboom, Jesper de Voogd, Diego Regnerus.
+Group 12: Thom Boerboom, Jesper de Voogd, Diego Regnerus.
 
 Mini-Spades: 4 players, 2 teams, 16 cards (A K Q J x 4 suits), 4 tricks, spades are trump, no bidding.
 Agents are GRUs trained with policy gradient (ToM0), extended with a prediction model of the other
@@ -10,8 +8,8 @@ players' next card (ToM1) and a two-stage variant (ToM2).
 ## Layout
 - `legacy/Spades_game.ipynb` - original engine and training notebook (individual-reward, ToM2 experiment)
 - `models/` - saved weights (`.pth`), see table below
-- `results/` - evaluation output (to be added)
-- `evaluate.py` - evaluation script (to be added)
+- `results/` - evaluation output 
+- `evaluate.py` - evaluation script 
 
 ## Models
 Input size read from the weight files. Meaning of the extra inputs still to be confirmed.
