@@ -1,0 +1,74 @@
+tom0:models/spades_model.pth  vs  random  [notebook, 5000 games]
+  win rate (ties split): 33.6% ±1.2
+  tricks won by A: 1.212 ±0.028 (of 4, per player) 
+  (2s)
+
+tom0:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 34.0% ±1.2
+  tricks won by A: 1.177 ±0.031 (of 4, per player) 
+  (4s)
+
+tom1:models/spades_model_ToM1.pth:models/opponent_prediction_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 33.8% ±1.2
+  tricks won by A: 1.199 ±0.031 (of 4, per player)
+  predictor: next-card accuracy 35.9% vs uniform-guess level 22.4% (n=60000) 
+  (8s)
+
+tom1:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 35.2% ±1.2
+  tricks won by A: 1.214 ±0.030 (of 4, per player)
+  predictor: next-card accuracy 35.8% vs uniform-guess level 22.4% (n=60000) 
+  (8s)
+
+tom1zero:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 34.8% ±1.2
+  tricks won by A: 1.212 ±0.030 (of 4, per player)
+  predictor: next-card accuracy 35.8% vs uniform-guess level 22.4% (n=60000) 
+  (8s)
+
+tom0:models/spades_model_ToM0_team.pth  vs  random  [team, 10000 games]
+  win rate (ties split): 57.7% ±0.5
+  tricks won by A: 2.237 ±0.012 (of 4, per team)
+  trick margin A-B: +0.475 ±0.025   tie rate: 32.0% 
+  (5s)
+
+heuristic  vs  random  [team, 10000 games]
+  win rate (ties split): 62.9% ±0.5
+  tricks won by A: 2.349 ±0.012 (of 4, per team)
+  trick margin A-B: +0.698 ±0.023   tie rate: 29.9% 
+  (2s)
+
+tom0:models/spades_model_ToM0_team.pth  vs  heuristic  [team, 10000 games]
+  win rate (ties split): 46.1% ±0.4
+  tricks won by A: 1.929 ±0.011 (of 4, per team)
+  trick margin A-B: -0.141 ±0.022   tie rate: 31.0% 
+  (6s)
+
+tom1coop:models/spades_model_ToM1_team_coop.pth:models/opponent_prediction_model_revised.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 49.9% ±0.4
+  tricks won by A: 2.006 ±0.010 (of 4, per team)
+  trick margin A-B: +0.012 ±0.021   tie rate: 31.1%
+  predictor: next-card accuracy 29.0% vs uniform-guess level 22.5% (n=240000) 
+  (21s)
+
+tom1:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 50.0% ±0.4
+  tricks won by A: 1.967 ±0.010 (of 4, per team)
+  trick margin A-B: -0.066 ±0.021   tie rate: 31.6%
+  predictor: next-card accuracy 30.3% vs uniform-guess level 22.5% (n=240000) 
+  (21s)
+
+tom1zero:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 50.0% ±0.4
+  tricks won by A: 1.967 ±0.010 (of 4, per team)
+  trick margin A-B: -0.067 ±0.020   tie rate: 31.6%
+  predictor: next-card accuracy 30.2% vs uniform-guess level 22.5% (n=240000) 
+  (20s)
+
+tom0:models/spades_model_ToM0_team.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 50.0% ±0.2
+  tricks won by A: 2.001 ±0.004 (of 4, per team)
+  trick margin A-B: +0.002 ±0.008   tie rate: 29.2% 
+  (9s)
+
+saved results/suite.json

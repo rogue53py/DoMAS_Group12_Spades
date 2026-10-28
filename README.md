@@ -26,5 +26,17 @@ Input size read from the weight files. Meaning of the extra inputs still to be c
 | spades_model_ToM1_team_comp.pth | 68 | to confirm (2 opponents would be 84) |
 | spades_model_ToM2_*.pth | 68 / 36 | two-stage ToM2 models - to confirm |
 
-## Status
-Evaluation (duplicate deals, team tricks, win rate with confidence intervals) is still to be written.
+## Evaluation
+`python evaluate.py --suite --games 5000` runs the standard matchups (numpy only, about 1-2 minutes) and writes
+`results/suite.json` and the printed table (`results/suite.txt`). Single matchups:
+
+```
+python evaluate.py --mode team --a tom0:models/spades_model_ToM0_team.pth --b heuristic --games 5000
+python evaluate.py --mode notebook --a tom0:models/spades_model.pth --b random --games 5000
+```
+Team mode plays every deal twice with the teams swapped and reports team tricks, trick margin and win rate
+with 95% confidence intervals. Notebook mode reproduces the single-agent setting of the notebook.
+`tom1zero:` is an ablation (a ToM1 model whose prediction inputs are replaced by zeros).
+
+Open points (to confirm with the author of the models): which team is which seat, the exact input layout of the
+`_team_` and ToM2 models, and which predictor belongs to which agent. The pairings used in the suite are assumptions.

@@ -1,0 +1,252 @@
+{
+ "games": 5000,
+ "seed": 0,
+ "results": [
+  {
+   "mode": "notebook",
+   "a": "tom0:models/spades_model.pth",
+   "b": "random",
+   "games": 5000,
+   "win_rate": [
+    0.33585,
+    0.012028235545534838
+   ],
+   "tricks_A": [
+    1.2122,
+    0.027864738620393993
+   ],
+   "predictor": null
+  },
+  {
+   "mode": "notebook",
+   "a": "tom0:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.33975,
+    0.012230663113831596
+   ],
+   "tricks_A": [
+    1.177,
+    0.03056486847602965
+   ],
+   "predictor": null
+  },
+  {
+   "mode": "notebook",
+   "a": "tom1:models/spades_model_ToM1.pth:models/opponent_prediction_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.338,
+    0.012147080317181012
+   ],
+   "tricks_A": [
+    1.1986,
+    0.030723945733923758
+   ],
+   "predictor": {
+    "accuracy": 0.3593166666666667,
+    "chance": 0.22371761063019605,
+    "n": 60000
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom1:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.352,
+    0.012324973172901535
+   ],
+   "tricks_A": [
+    1.2138,
+    0.02991453818226401
+   ],
+   "predictor": {
+    "accuracy": 0.35833333333333334,
+    "chance": 0.22373567279951034,
+    "n": 60000
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom1zero:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.34835,
+    0.012283401574468202
+   ],
+   "tricks_A": [
+    1.2116,
+    0.029882871067845058
+   ],
+   "predictor": {
+    "accuracy": 0.3581166666666667,
+    "chance": 0.22355421777305576,
+    "n": 60000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom0:models/spades_model_ToM0_team.pth",
+   "b": "random",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.2374,
+    0.012460472631182112
+   ],
+   "margin": [
+    0.4748,
+    0.024920945262364224
+   ],
+   "win_rate": [
+    0.57745,
+    0.004913331937223972
+   ],
+   "tie_rate": 0.3205,
+   "predictor": null
+  },
+  {
+   "mode": "team",
+   "a": "heuristic",
+   "b": "random",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.3491,
+    0.011701539234856794
+   ],
+   "margin": [
+    0.6982,
+    0.023403078469713588
+   ],
+   "win_rate": [
+    0.6291,
+    0.004908965688373257
+   ],
+   "tie_rate": 0.2988,
+   "predictor": null
+  },
+  {
+   "mode": "team",
+   "a": "tom0:models/spades_model_ToM0_team.pth",
+   "b": "heuristic",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    1.9293,
+    0.010802494662872473
+   ],
+   "margin": [
+    -0.1414,
+    0.021604989325744946
+   ],
+   "win_rate": [
+    0.46115,
+    0.004174635655164492
+   ],
+   "tie_rate": 0.3099,
+   "predictor": null
+  },
+  {
+   "mode": "team",
+   "a": "tom1coop:models/spades_model_ToM1_team_coop.pth:models/opponent_prediction_model_revised.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.0061,
+    0.010476061873971414
+   ],
+   "margin": [
+    0.0122,
+    0.02095212374794283
+   ],
+   "win_rate": [
+    0.4987,
+    0.003968930841121362
+   ],
+   "tie_rate": 0.3106,
+   "predictor": {
+    "accuracy": 0.29010416666666666,
+    "chance": 0.22470429593546867,
+    "n": 240000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom1:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    1.9669,
+    0.010300056658010754
+   ],
+   "margin": [
+    -0.0662,
+    0.020600113316021507
+   ],
+   "win_rate": [
+    0.5005,
+    0.0038461573687644485
+   ],
+   "tie_rate": 0.316,
+   "predictor": {
+    "accuracy": 0.3027916666666667,
+    "chance": 0.2254060320465822,
+    "n": 240000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom1zero:models/spades_model_ToM1_revised.pth:models/opponent_prediction_model_revised.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    1.9667,
+    0.010217158102874784
+   ],
+   "margin": [
+    -0.0666,
+    0.020434316205749564
+   ],
+   "win_rate": [
+    0.49955,
+    0.003819847989505942
+   ],
+   "tie_rate": 0.3163,
+   "predictor": {
+    "accuracy": 0.30207083333333334,
+    "chance": 0.22533945797250798,
+    "n": 240000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom0:models/spades_model_ToM0_team.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.0011,
+    0.004078789727103811
+   ],
+   "margin": [
+    0.0022,
+    0.008157579454207623
+   ],
+   "win_rate": [
+    0.4997,
+    0.0015496487129109892
+   ],
+   "tie_rate": 0.2922,
+   "predictor": null
+  }
+ ]
+}
