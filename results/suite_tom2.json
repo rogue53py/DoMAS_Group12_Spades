@@ -1,0 +1,296 @@
+{
+ "games": 5000,
+ "seed": 0,
+ "results": [
+  {
+   "mode": "notebook",
+   "a": "tom2:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth",
+   "b": "random",
+   "games": 5000,
+   "win_rate": [
+    0.336,
+    0.01203100553980671
+   ],
+   "tricks_A": [
+    1.2114,
+    0.0281055479629567
+   ],
+   "predictor": {
+    "accuracy": 0.2872478252822506,
+    "chance": 0.19611873874782643,
+    "n": 10806
+   },
+   "tom2": {
+    "tom2_share": 0.5403,
+    "public_accuracy": 0.1909124560429391,
+    "public_chance": 0.14098957870125822,
+    "n": 10806
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom2:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.35415,
+    0.012353598839595607
+   ],
+   "tricks_A": [
+    1.2062,
+    0.030302393423435017
+   ],
+   "predictor": {
+    "accuracy": 0.35878811048456466,
+    "chance": 0.1978461620892021,
+    "n": 10463
+   },
+   "tom2": {
+    "tom2_share": 0.52315,
+    "public_accuracy": 0.23979738124820796,
+    "public_chance": 0.1423089836666172,
+    "n": 10463
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom2zero:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.3527,
+    0.012335310053745078
+   ],
+   "tricks_A": [
+    1.2028,
+    0.030292128426046856
+   ],
+   "predictor": {
+    "accuracy": 0.3577779902476336,
+    "chance": 0.19785596185585924,
+    "n": 10459
+   },
+   "tom2": {
+    "tom2_share": 0.52295,
+    "public_accuracy": 0.2407495936514007,
+    "public_chance": 0.14230825664757402,
+    "n": 10459
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom2:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth",
+   "b": "random",
+   "games": 5000,
+   "win_rate": [
+    0.3369,
+    0.012045987222574711
+   ],
+   "tricks_A": [
+    1.2038,
+    0.02790737578820117
+   ],
+   "predictor": {
+    "accuracy": 0.28668782673637044,
+    "chance": 0.1952770092636526,
+    "n": 10712
+   },
+   "tom2": {
+    "tom2_share": 0.5356,
+    "public_accuracy": 0.18717326362957432,
+    "public_chance": 0.14055349484656898,
+    "n": 10712
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom2:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.35145,
+    0.012336639669815625
+   ],
+   "tricks_A": [
+    1.2038,
+    0.030532097419826418
+   ],
+   "predictor": {
+    "accuracy": 0.3562988374309129,
+    "chance": 0.19751185381544903,
+    "n": 10494
+   },
+   "tom2": {
+    "tom2_share": 0.5247,
+    "public_accuracy": 0.2537640556508481,
+    "public_chance": 0.14210944699794706,
+    "n": 10494
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom2zero:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.352,
+    0.012335101039859084
+   ],
+   "tricks_A": [
+    1.2036,
+    0.03051046272084197
+   ],
+   "predictor": {
+    "accuracy": 0.35619047619047617,
+    "chance": 0.1976209475709407,
+    "n": 10500
+   },
+   "tom2": {
+    "tom2_share": 0.525,
+    "public_accuracy": 0.25323809523809526,
+    "public_chance": 0.1421885693671331,
+    "n": 10500
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom2:models/spades_model_ToM2_team_coop_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.0076,
+    0.0099851639213639
+   ],
+   "margin": [
+    0.0152,
+    0.0199703278427278
+   ],
+   "win_rate": [
+    0.49875,
+    0.0037843398031293524
+   ],
+   "tie_rate": 0.3061,
+   "predictor": {
+    "accuracy": 0.26705,
+    "chance": 0.1998949558080826,
+    "n": 40000
+   },
+   "tom2": {
+    "tom2_share": 0.5,
+    "public_accuracy": 0.182725,
+    "public_chance": 0.14362552759740244,
+    "n": 40000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom2zero:models/spades_model_ToM2_team_coop_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    2.0068,
+    0.009814839127393752
+   ],
+   "margin": [
+    0.0136,
+    0.019629678254787505
+   ],
+   "win_rate": [
+    0.4985,
+    0.003739584492752596
+   ],
+   "tie_rate": 0.3066,
+   "predictor": {
+    "accuracy": 0.266275,
+    "chance": 0.19993009469697148,
+    "n": 40000
+   },
+   "tom2": {
+    "tom2_share": 0.5,
+    "public_accuracy": 0.1832,
+    "public_chance": 0.14364300595238075,
+    "n": 40000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom2:models/spades_model_ToM2_team_comp_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    1.9967,
+    0.01022460158102496
+   ],
+   "margin": [
+    -0.0066,
+    0.02044920316204992
+   ],
+   "win_rate": [
+    0.4933,
+    0.0039012441677510113
+   ],
+   "tie_rate": 0.3098,
+   "predictor": {
+    "accuracy": 0.2604,
+    "chance": 0.20007391414141593,
+    "n": 40000
+   },
+   "tom2": {
+    "tom2_share": 0.5,
+    "public_accuracy": 0.186075,
+    "public_chance": 0.14371543560606045,
+    "n": 40000
+   }
+  },
+  {
+   "mode": "team",
+   "a": "tom2zero:models/spades_model_ToM2_team_comp_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth",
+   "b": "tom0:models/spades_model_ToM0_team.pth",
+   "games": 10000,
+   "deals": 5000,
+   "tricks_A": [
+    1.9962,
+    0.010162271784043298
+   ],
+   "margin": [
+    -0.0076,
+    0.020324543568086596
+   ],
+   "win_rate": [
+    0.49305,
+    0.0038799204862723616
+   ],
+   "tie_rate": 0.3077,
+   "predictor": {
+    "accuracy": 0.260775,
+    "chance": 0.2001032196969714,
+    "n": 40000
+   },
+   "tom2": {
+    "tom2_share": 0.5,
+    "public_accuracy": 0.18715,
+    "public_chance": 0.143731101190476,
+    "n": 40000
+   }
+  },
+  {
+   "mode": "notebook",
+   "a": "tom0:models/spades_model.pth",
+   "b": "tom0:models/spades_model.pth",
+   "games": 5000,
+   "win_rate": [
+    0.33975,
+    0.012230663113831596
+   ],
+   "tricks_A": [
+    1.177,
+    0.03056486847602965
+   ],
+   "predictor": null,
+   "tom2": null
+  }
+ ]
+}

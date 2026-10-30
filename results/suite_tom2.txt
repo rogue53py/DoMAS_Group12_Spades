@@ -1,0 +1,80 @@
+tom2:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth  vs  random  [notebook, 5000 games]
+  win rate (ties split): 33.6% ±1.2
+  tricks won by A: 1.211 ±0.028 (of 4, per player)
+  belief model (next player): next-card accuracy 28.7% vs uniform-guess level 19.6% (n=10806)
+  public model (seat+2): accuracy 19.1% vs uniform-guess level 14.1%   decisions made by ToM2 path: 54% (rest: ToM0 backup) 
+  (3s)
+
+tom2:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 35.4% ±1.2
+  tricks won by A: 1.206 ±0.030 (of 4, per player)
+  belief model (next player): next-card accuracy 35.9% vs uniform-guess level 19.8% (n=10463)
+  public model (seat+2): accuracy 24.0% vs uniform-guess level 14.2%   decisions made by ToM2 path: 52% (rest: ToM0 backup) 
+  (6s)
+
+tom2zero:models/spades_model_ToM2_base.pth:models/spades_model_ToM2_1.pth:models/spades_model_ToM2_2.pth:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 35.3% ±1.2
+  tricks won by A: 1.203 ±0.030 (of 4, per player)
+  belief model (next player): next-card accuracy 35.8% vs uniform-guess level 19.8% (n=10459)
+  public model (seat+2): accuracy 24.1% vs uniform-guess level 14.2%   decisions made by ToM2 path: 52% (rest: ToM0 backup) 
+  (5s)
+
+tom2:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth  vs  random  [notebook, 5000 games]
+  win rate (ties split): 33.7% ±1.2
+  tricks won by A: 1.204 ±0.028 (of 4, per player)
+  belief model (next player): next-card accuracy 28.7% vs uniform-guess level 19.5% (n=10712)
+  public model (seat+2): accuracy 18.7% vs uniform-guess level 14.1%   decisions made by ToM2 path: 54% (rest: ToM0 backup) 
+  (3s)
+
+tom2:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 35.1% ±1.2
+  tricks won by A: 1.204 ±0.031 (of 4, per player)
+  belief model (next player): next-card accuracy 35.6% vs uniform-guess level 19.8% (n=10494)
+  public model (seat+2): accuracy 25.4% vs uniform-guess level 14.2%   decisions made by ToM2 path: 52% (rest: ToM0 backup) 
+  (7s)
+
+tom2zero:models/spades_model_ToM2_revised.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 35.2% ±1.2
+  tricks won by A: 1.204 ±0.031 (of 4, per player)
+  belief model (next player): next-card accuracy 35.6% vs uniform-guess level 19.8% (n=10500)
+  public model (seat+2): accuracy 25.3% vs uniform-guess level 14.2%   decisions made by ToM2 path: 52% (rest: ToM0 backup) 
+  (6s)
+
+tom2:models/spades_model_ToM2_team_coop_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 49.9% ±0.4
+  tricks won by A: 2.008 ±0.010 (of 4, per team)
+  trick margin A-B: +0.015 ±0.020   tie rate: 30.6%
+  belief model (next player): next-card accuracy 26.7% vs uniform-guess level 20.0% (n=40000)
+  public model (seat+2): accuracy 18.3% vs uniform-guess level 14.4%   decisions made by ToM2 path: 50% (rest: ToM0 backup) 
+  (14s)
+
+tom2zero:models/spades_model_ToM2_team_coop_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 49.9% ±0.4
+  tricks won by A: 2.007 ±0.010 (of 4, per team)
+  trick margin A-B: +0.014 ±0.020   tie rate: 30.7%
+  belief model (next player): next-card accuracy 26.6% vs uniform-guess level 20.0% (n=40000)
+  public model (seat+2): accuracy 18.3% vs uniform-guess level 14.4%   decisions made by ToM2 path: 50% (rest: ToM0 backup) 
+  (13s)
+
+tom2:models/spades_model_ToM2_team_comp_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 49.3% ±0.4
+  tricks won by A: 1.997 ±0.010 (of 4, per team)
+  trick margin A-B: -0.007 ±0.020   tie rate: 31.0%
+  belief model (next player): next-card accuracy 26.0% vs uniform-guess level 20.0% (n=40000)
+  public model (seat+2): accuracy 18.6% vs uniform-guess level 14.4%   decisions made by ToM2 path: 50% (rest: ToM0 backup) 
+  (14s)
+
+tom2zero:models/spades_model_ToM2_team_comp_base.pth:models/spades_model_ToM2_1revised.pth:models/spades_model_ToM2_2revised.pth:models/spades_model_ToM0_team.pth  vs  tom0:models/spades_model_ToM0_team.pth  [team, 10000 games]
+  win rate (ties split): 49.3% ±0.4
+  tricks won by A: 1.996 ±0.010 (of 4, per team)
+  trick margin A-B: -0.008 ±0.020   tie rate: 30.8%
+  belief model (next player): next-card accuracy 26.1% vs uniform-guess level 20.0% (n=40000)
+  public model (seat+2): accuracy 18.7% vs uniform-guess level 14.4%   decisions made by ToM2 path: 50% (rest: ToM0 backup) 
+  (14s)
+
+tom0:models/spades_model.pth  vs  tom0:models/spades_model.pth  [notebook, 5000 games]
+  win rate (ties split): 34.0% ±1.2
+  tricks won by A: 1.177 ±0.031 (of 4, per player) 
+  (4s)
+
+saved results/suite_tom2.json

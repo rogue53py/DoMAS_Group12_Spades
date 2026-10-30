@@ -22,6 +22,9 @@ Agent specs (strings)
   tom1:<weights.pth>:<pred.pth>   GRU, input 100 = 52 + predictions for the 3 other players
   tom1coop:<weights.pth>:<pred.pth>   GRU, input 68 = 52 + prediction for the teammate only (UNVERIFIED layout)
   tom1zero:<weights.pth>:<pred.pth>    ablation: a tom1 model whose prediction inputs are replaced by zeros
+  tom2:<main.pth>:<belief.pth>:<public.pth>:<backup.pth>   second-order agent (see ToM2Agent):
+                                  main 68 inputs, belief model 68, public model 36, ToM0 backup 52
+  tom2zero:...                    ablation: ToM2 with its belief-model output replaced by zeros
 
 Examples
   python evaluate.py --mode notebook --a tom0:models/spades_model.pth --b random --games 5000
@@ -297,6 +300,80 @@ class GRUAgent(Agent):
         return legal[self.rng.choice(len(legal), p=softmax(lg))]
 
 
+class ToM2Agent(Agent):
+    """Second-order ToM agent, replicating the ToM2 code path of the notebook (Spades.Step, tom2_model=True).
+
+    Only when the agent plays 1st or 2nd in a trick ("tom2ready"):
+      1. public model (36 inputs: table 16 + history 16 + own-position one-hot 4) predicts, from public
+         information only, which card will be played -> p_pub (masked to cards not yet public).
+         In the notebook it is trained on the card of the player two seats further (seat + 2).
+         Interpretation: what an observer who cannot see my hand would expect.
+      2. belief model (68 inputs: own hand 16 + table 16 + history 16 + p_pub 16 + own-position one-hot 4)
+         -> p_bel (masked to cards the agent has not seen). Trained on the card of the next player (seat + 1).
+      3. decision model (68 inputs: hand 16 + table 16 + history 16 + trick position 4 + p_bel 16) picks the card.
+    When the agent plays 3rd or 4th it uses a frozen ToM0 backup model (52 inputs), as in the notebook.
+    Each of the four networks keeps its own hidden state over the game.
+    kind 'tom2zero' is the ablation: p_bel is replaced by zeros before the decision model."""
+
+    def __init__(self, kind, main_path, belief_path, public_path, backup_path, rng, greedy=False, seat_input="own"):
+        self.kind, self.rng, self.greedy, self.seat_input = kind, rng, greedy, seat_input
+        self.main, self.bel = GRUNet.get(main_path), GRUNet.get(belief_path)
+        self.pub, self.backup = GRUNet.get(public_path), GRUNet.get(backup_path)
+        self.stats = dict(hits=0, n=0, chance=0.0)          # belief model, scored on seat + 1
+        self.pstats = dict(hits=0, n=0, chance=0.0)         # public model, scored on seat + 2
+        self.moves = dict(tom2=0, backup=0)
+
+    def start_game(self, seat, hand):
+        super().start_game(seat, hand)
+        self.h_main = self.h_bel = self.h_pub = self.h_backup = None
+        self.pending = {}
+
+    def new_trick(self):
+        self.pending = {}
+
+    @staticmethod
+    def _masked_probs(logits, allowed):
+        if not allowed.any():
+            allowed = np.ones_like(allowed, dtype=bool)
+        return softmax(np.where(allowed, logits, -np.inf)), int(allowed.sum())
+
+    def saw_play(self, seat, card):
+        if seat in self.pending:
+            probs, n, which = self.pending.pop(seat)
+            s = self.stats if which == "bel" else self.pstats
+            s["n"] += 1
+            s["hits"] += int(np.argmax(probs) == card)
+            s["chance"] += 1.0 / n
+
+    def predictor_stats(self):
+        return self.stats
+
+    def act(self, st, legal):
+        pos = st.order.index(self.seat)                     # own position in this trick
+        pos_in = pos if self.seat_input == "own" else st.order.index(0)
+        hand = onehot(self.hand)
+        if pos < 2:                                         # tom2ready
+            self.moves["tom2"] += 1
+            me = np.eye(4)[0]                               # notebook: opponent_position_hot[0] = 1 (the agent itself)
+            lp, self.h_pub = self.pub.step(np.concatenate([st.tablehot, st.histhot, me]), self.h_pub)
+            p_pub, n_pub = self._masked_probs(lp, (st.histhot + st.tablehot) == 0)
+            lb, self.h_bel = self.bel.step(np.concatenate([hand, st.tablehot, st.histhot, p_pub, me]), self.h_bel)
+            p_bel, n_bel = self._masked_probs(lb, (st.histhot + st.tablehot + hand) == 0)
+            self.pending[(self.seat + 1) % 4] = (p_bel, n_bel, "bel")
+            self.pending[(self.seat + 2) % 4] = (p_pub, n_pub, "pub")
+            extra = np.zeros(16) if self.kind == "tom2zero" else p_bel
+            x = np.concatenate([hand, st.tablehot, st.histhot, np.eye(4)[pos_in], extra])
+            logits, self.h_main = self.main.step(x, self.h_main)
+        else:
+            self.moves["backup"] += 1
+            x = np.concatenate([hand, st.tablehot, st.histhot, np.eye(4)[pos_in]])
+            logits, self.h_backup = self.backup.step(x, self.h_backup)
+        lg = np.array([logits[c] for c in legal])
+        if self.greedy:
+            return legal[int(np.argmax(lg))]
+        return legal[self.rng.choice(len(legal), p=softmax(lg))]
+
+
 def make_agent(spec, rng, greedy=False, seat_input="own"):
     parts = spec.split(":")
     kind = parts[0]
@@ -308,6 +385,8 @@ def make_agent(spec, rng, greedy=False, seat_input="own"):
         return GRUAgent("tom0", parts[1], None, rng, greedy, seat_input)
     if kind in ("tom1", "tom1coop", "tom1zero"):
         return GRUAgent(kind, parts[1], parts[2], rng, greedy, seat_input)
+    if kind in ("tom2", "tom2zero"):
+        return ToM2Agent(kind, parts[1], parts[2], parts[3], parts[4], rng, greedy, seat_input)
     raise ValueError(f"unknown agent spec {spec!r}")
 
 
@@ -366,6 +445,15 @@ def pred_summary(agents):
     return None if n == 0 else dict(accuracy=h / n, chance=c / n, n=n)
 
 
+def tom2_summary(agents):
+    ag = [a for a in agents if isinstance(a, ToM2Agent)]
+    if not ag:
+        return None
+    t2 = sum(a.moves["tom2"] for a in ag); bk = sum(a.moves["backup"] for a in ag)
+    h = sum(a.pstats["hits"] for a in ag); n = sum(a.pstats["n"] for a in ag); c = sum(a.pstats["chance"] for a in ag)
+    return dict(tom2_share=t2 / max(1, t2 + bk), public_accuracy=h / max(1, n), public_chance=c / max(1, n), n=n)
+
+
 # ----------------------------------------------------------------------------- modes
 def run_notebook(spec_a, spec_b, games, seed, greedy=False, seat_input_b="own"):
     """Agent A at seat 0 against three copies of B (the setting of the notebook)."""
@@ -382,7 +470,7 @@ def run_notebook(spec_a, spec_b, games, seed, greedy=False, seat_input_b="own"):
         win.append(1 / len(winners) if 0 in winners else 0.0)
         tr.append(t[0])
     return dict(mode="notebook", a=spec_a, b=spec_b, games=games,
-                win_rate=ci(win), tricks_A=ci(tr), predictor=pred_summary([a]))
+                win_rate=ci(win), tricks_A=ci(tr), predictor=pred_summary([a]), tom2=tom2_summary([a]))
 
 
 def run_team(spec_a, spec_b, games, seed, greedy=False, seat_input="own"):
@@ -408,7 +496,7 @@ def run_team(spec_a, spec_b, games, seed, greedy=False, seat_input="own"):
         tricks_a.append(np.mean(ta)); margin.append(np.mean(mg)); win.append(np.mean(w)); tie.append(np.mean(ti))
     return dict(mode="team", a=spec_a, b=spec_b, games=games * 2, deals=games,
                 tricks_A=ci(tricks_a), margin=ci(margin), win_rate=ci(win), tie_rate=float(np.mean(tie)),
-                predictor=pred_summary(A))
+                predictor=pred_summary(A), tom2=tom2_summary(A))
 
 
 def fmt(r):
@@ -421,8 +509,54 @@ def fmt(r):
         s += f"\n  trick margin A-B: {r['margin'][0]:+.3f} ±{r['margin'][1]:.3f}   tie rate: {r['tie_rate']*100:.1f}%"
     if r["predictor"]:
         p = r["predictor"]
-        s += f"\n  predictor: next-card accuracy {p['accuracy']*100:.1f}% vs uniform-guess level {p['chance']*100:.1f}% (n={p['n']})"
+        label = "belief model (next player)" if r.get("tom2") else "predictor"
+        s += f"\n  {label}: next-card accuracy {p['accuracy']*100:.1f}% vs uniform-guess level {p['chance']*100:.1f}% (n={p['n']})"
+    if r.get("tom2"):
+        t = r["tom2"]
+        s += (f"\n  public model (seat+2): accuracy {t['public_accuracy']*100:.1f}% vs uniform-guess level "
+              f"{t['public_chance']*100:.1f}%   decisions made by ToM2 path: {t['tom2_share']*100:.0f}% (rest: ToM0 backup)")
     return s
+
+
+def tom2_suite(models, games, seed):
+    """ToM2 matchups. Notebook mode replicates the notebook's ToM2 experiment; team mode is UNVERIFIED
+    (the team-training code for the ToM2 team models was not available, so the same input layout is assumed)."""
+    M = lambda f: os.path.join(models, f)
+    t0, t0t = M("spades_model.pth"), M("spades_model_ToM0_team.pth")
+    sets = {
+        "orig": (M("spades_model_ToM2_base.pth"), M("spades_model_ToM2_1.pth"), M("spades_model_ToM2_2.pth")),
+        "revised": (M("spades_model_ToM2_revised.pth"), M("spades_model_ToM2_1revised.pth"), M("spades_model_ToM2_2revised.pth")),
+    }
+    spec = lambda kind, main, bel, pub, bk: f"{kind}:{main}:{bel}:{pub}:{bk}"
+    jobs = []
+    for name, (main, bel, pub) in sets.items():
+        jobs += [
+            ("notebook", spec("tom2", main, bel, pub, t0), "random", dict(seat_input_b="own")),
+            ("notebook", spec("tom2", main, bel, pub, t0), f"tom0:{t0}", dict(seat_input_b="player0")),
+            ("notebook", spec("tom2zero", main, bel, pub, t0), f"tom0:{t0}", dict(seat_input_b="player0")),
+        ]
+    _, bel, pub = sets["revised"]
+    for main in (M("spades_model_ToM2_team_coop_base.pth"), M("spades_model_ToM2_team_comp_base.pth")):
+        jobs += [
+            ("team", spec("tom2", main, bel, pub, t0t), f"tom0:{t0t}", {}),
+            ("team", spec("tom2zero", main, bel, pub, t0t), f"tom0:{t0t}", {}),
+        ]
+    jobs.append(("notebook", f"tom0:{t0}", f"tom0:{t0}", dict(seat_input_b="player0")))   # reference
+    return _run_jobs(jobs, games, seed)
+
+
+def _run_jobs(jobs, games, seed):
+    out = []
+    for mode, a, b, kw in jobs:
+        t = time.time()
+        try:
+            r = (run_notebook if mode == "notebook" else run_team)(a, b, games, seed, **kw)
+            print(fmt(r), f"\n  ({time.time() - t:.0f}s)\n", flush=True)
+        except Exception as e:  # keep going, report the problem
+            r = dict(mode=mode, a=a, b=b, error=str(e))
+            print(f"{a} vs {b}: ERROR {e}\n", flush=True)
+        out.append(r)
+    return out
 
 
 def standard_suite(models, games, seed):
@@ -443,17 +577,7 @@ def standard_suite(models, games, seed):
         ("team", f"tom1zero:{M('spades_model_ToM1_revised.pth')}:{P2}", f"tom0:{t0t}", {}),
         ("team", f"tom0:{t0t}", f"tom0:{t0t}", {}),
     ]
-    out = []
-    for mode, a, b, kw in jobs:
-        t = time.time()
-        try:
-            r = (run_notebook if mode == "notebook" else run_team)(a, b, games, seed, **kw)
-            print(fmt(r), f"\n  ({time.time() - t:.0f}s)\n", flush=True)
-        except Exception as e:  # keep going, report the problem
-            r = dict(mode=mode, a=a, b=b, error=str(e))
-            print(f"{a} vs {b}: ERROR {e}\n", flush=True)
-        out.append(r)
-    return out
+    return _run_jobs(jobs, games, seed)
 
 
 def main():
@@ -465,17 +589,20 @@ def main():
     ap.add_argument("--greedy", action="store_true", help="play the arg-max card instead of sampling")
     ap.add_argument("--seat-input", choices=["own", "player0"], default="own",
                     help="seat one-hot given to opponents: own seat, or seat 0's position (notebook quirk)")
-    ap.add_argument("--suite", action="store_true", help="run the standard set of matchups")
+    ap.add_argument("--suite", nargs="?", const="standard", choices=["standard", "tom2"],
+                    help="run a set of matchups: 'standard' (ToM0/ToM1, default) or 'tom2'")
     ap.add_argument("--models", default="models")
     ap.add_argument("--out", default="results")
     args = ap.parse_args()
 
     if args.suite:
-        res = standard_suite(args.models, args.games, args.seed)
+        fn = standard_suite if args.suite == "standard" else tom2_suite
+        res = fn(args.models, args.games, args.seed)
         os.makedirs(args.out, exist_ok=True)
-        with open(os.path.join(args.out, "suite.json"), "w") as f:
+        name = "suite.json" if args.suite == "standard" else "suite_tom2.json"
+        with open(os.path.join(args.out, name), "w") as f:
             json.dump(dict(games=args.games, seed=args.seed, results=res), f, indent=1, default=float)
-        print(f"saved {args.out}/suite.json")
+        print(f"saved {args.out}/{name}")
         return
     if not (args.a and args.b):
         ap.error("--a and --b are required (or use --suite)")
